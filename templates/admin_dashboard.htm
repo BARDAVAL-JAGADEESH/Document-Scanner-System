@@ -4,9 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        /* Set the background image */
+        body {
+            background-image: url('https://tse4.mm.bing.net/th?id=OIP.oDmQn8ncWbN8DJifU9YbrQHaEM&pid=Api&P=0&h=180.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* White background with transparency */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* You can adjust the max-width for container size */
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        h4 {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
         <h2 class="mt-5">Admin Dashboard</h2>
 
@@ -26,5 +83,6 @@
 
         <a href="/admin/logout" class="btn btn-danger mt-3">Logout</a>
     </div>
+
 </body>
 </html>
