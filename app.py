@@ -1,0 +1,297 @@
+import os
+from flask import Flask, render_template, request, redirect, session, flash, Response
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+from datetime import datetime
+import sqlite3
+from Levenshtein import distance as levenshtein_distance
+
+app = Flask(__name__)
+app.secret_key = '763a6281586470046cd8dc9c3941c17c3589517284b56c88'  # Replace with a strong secret key
+
+# Allowed file extensions and upload folder
+ALLOWED_EXTENSIONS = {'txt', 'csv', 'pdf'}
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+# Database connection helper
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
+def initialize_database():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(''' 
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            contact TEXT NOT NULL,
+            password_hash TEXT NOT NULL,
+            role TEXT DEFAULT 'user',
+            credits INTEGER DEFAULT 20,
+            last_reset DATE DEFAULT CURRENT_DATE
+        )
+    ''')
+    cursor.execute(''' 
+        CREATE TABLE IF NOT EXISTS documents (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            filename TEXT NOT NULL,
+            content TEXT NOT NULL,
+            upload_date DATE DEFAULT CURRENT_DATE,
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+    cursor.execute(''' 
+        CREATE TABLE IF NOT EXISTS credit_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            requested_credits INTEGER NOT NULL,
+            status TEXT DEFAULT 'pending',
+            FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Improved daily credits reset (should be scheduled to run at midnight in production)
+def reset_daily_credits():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    today = datetime.now().date()
+    cursor.execute(
+        'UPDATE users SET credits = 20, last_reset = ? WHERE last_reset < ?', 
+        (today, today)
+    )
+    conn.commit()
+    conn.close()
+
+# Check if file extension is allowed
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Homepage
+@app.route('/')
+def index():
+    return render_template('index.htm')
+
+# User Registration
+@app.route('/auth/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        contact = request.form['contact']
+        password = request.form['password']
+        password_hash = generate_password_hash(password)
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                'INSERT INTO users (name, email, contact, password_hash) VALUES (?, ?, ?, ?)', 
+                (name, email, contact, password_hash)
+            )
+            conn.commit()
+            flash('Registration successful! Please log in.', 'success')
+            return redirect('/auth/login')
+        except sqlite3.IntegrityError:
+            flash('Email already registered. Please use a different email.', 'error')
+        finally:
+            conn.close()
+    return render_template('register.htm')
+
+# User Login
+@app.route('/auth/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+        user = cursor.fetchone()
+        conn.close()
+        if user and check_password_hash(user['password_hash'], password):
+            session['user_id'] = user['id']
+            session['username'] = user['name']
+            session['role'] = user['role']
+            flash('Login successful!', 'success')
+            return redirect('/user/profile')
+        else:
+            flash('Invalid email or password.', 'error')
+    return render_template('login.htm')
+
+# User Profile
+@app.route('/user/profile')
+def profile():
+    if 'user_id' not in session:
+        flash('Please log in to access this page.', 'error')
+        return redirect('/auth/login')
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM users WHERE id = ?', (session['user_id'],))
+    user = cursor.fetchone()
+    cursor.execute('SELECT * FROM documents WHERE user_id = ?', (session['user_id'],))
+    documents = cursor.fetchall()
+    conn.close()
+    return render_template('profile.htm', user=user, documents=documents)
+
+# Document Upload
+@app.route('/scan', methods=['GET', 'POST'])
+def upload_document():
+    if 'user_id' not in session:
+        flash('Please log in to upload documents.', 'error')
+        return redirect('/auth/login')
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file uploaded.', 'error')
+            return redirect('/scan')
+        file = request.files['file']
+        if file.filename == '':
+            flash('No file selected.', 'error')
+            return redirect('/scan')
+        if not allowed_file(file.filename):
+            flash('Only TXT, CSV, or PDF files are allowed.', 'error')
+            return redirect('/scan')
+
+        file_content = file.read()
+        try:
+            content = file_content.decode('utf-8')
+        except UnicodeDecodeError:
+            try:
+                content = file_content.decode('latin-1')
+            except UnicodeDecodeError:
+                flash('Unsupported file type. Please upload a valid text file.', 'error')
+                return redirect('/scan')
+        # Save file locally
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
+        with open(filepath, 'wb') as f:
+            f.write(file_content)
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT credits FROM users WHERE id = ?', (session['user_id'],))
+        user_credits = cursor.fetchone()['credits']
+        if user_credits < 1:
+            flash('Insufficient credits. Please request more.', 'error')
+            return redirect('/user/profile')
+        cursor.execute(
+            'INSERT INTO documents (user_id, filename, content) VALUES (?, ?, ?)', 
+            (session['user_id'], filename, content)
+        )
+        cursor.execute('UPDATE users SET credits = credits - 1 WHERE id = ?', (session['user_id'],))
+        conn.commit()
+        conn.close()
+        flash('Document uploaded successfully!', 'success')
+        return redirect('/user/profile')
+    return render_template('upload.htm')
+
+# Export Scan History
+@app.route('/user/export')
+def export_report():
+    if 'user_id' not in session:
+        flash('Please log in to export your report.', 'error')
+        return redirect('/auth/login')
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT filename, upload_date FROM documents WHERE user_id = ?', (session['user_id'],))
+    documents = cursor.fetchall()
+    conn.close()
+    report = "Your Scan History:\n\n"
+    for doc in documents:
+        report += f"Filename: {doc['filename']} - Uploaded on: {doc['upload_date']}\n"
+    return Response(report, mimetype='text/plain', headers={"Content-Disposition": "attachment;filename=scan_history.txt"})
+
+# Logout
+@app.route('/auth/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out.', 'success')
+    return redirect('/')
+
+# Admin Registration
+@app.route('/admin/register', methods=['GET', 'POST'])
+def admin_register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        contact = request.form['contact']
+        password = request.form['password']
+        password_hash = generate_password_hash(password)
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(
+                'INSERT INTO users (name, email, contact, password_hash, role) VALUES (?, ?, ?, ?, ?)', 
+                (name, email, contact, password_hash, 'admin')
+            )
+            conn.commit()
+            flash('Admin registration successful! Please log in.', 'success')
+            return redirect('/admin/login')
+        except sqlite3.IntegrityError:
+            flash('Email already registered. Please use a different email.', 'error')
+        finally:
+            conn.close()
+
+    return render_template('admin_register.htm')
+
+# Admin Login
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user and user['role'] == 'admin' and check_password_hash(user['password_hash'], password):
+            session['user_id'] = user['id']
+            session['username'] = user['name']
+            session['role'] = user['role']
+            flash('Admin login successful!', 'success')
+            return redirect('/admin/dashboard')
+        else:
+            flash('Invalid login credentials or not an admin.', 'error')
+
+    return render_template('admin_login.htm')
+
+# Admin Dashboard
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    if 'role' not in session or session['role'] != 'admin':
+        flash('You must be an admin to access this page.', 'error')
+        return redirect('/admin/login')
+    
+    # Fetch admin data here (e.g., total users, total documents)
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM users')
+    total_users = cursor.fetchone()[0]
+    cursor.execute('SELECT COUNT(*) FROM documents')
+    total_documents = cursor.fetchone()[0]
+    conn.close()
+
+    return render_template('admin_dashboard.htm', total_users=total_users, total_documents=total_documents)
+
+# Admin Logout
+@app.route('/admin/logout')
+def admin_logout():
+    session.clear()
+    flash('You have been logged out.', 'success')
+    return redirect('/admin/login')
+
+# Initialize the database and run the app
+if __name__ == '__main__':
+    initialize_database()
+    reset_daily_credits()  # For production, schedule this to run daily at midnight.
+    app.run(debug=True)
