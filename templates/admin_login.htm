@@ -4,11 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        
+        body {
+            background-image: url('https://tse1.mm.bing.net/th?id=OIP.ODtYTrTqz2Rc311z0ncXAAHaEx&pid=Api&P=0&h=180.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.8); 
+            color: white; 
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px; 
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: white; 
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: rgb(221, 61, 111); 
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #d31487;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            width: 30%;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e763c8;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 1em;
+        }
+
+        a {
+            color: #f11a94;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            color: rgb(239, 23, 23);
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
-        <h2 class="mt-5">Admin Login</h2>
+        <h2>Admin Login</h2>
 
         <!-- Display Flash Message -->
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -19,21 +107,22 @@
             {% endif %}
         {% endwith %}
 
-        <form method="POST" class="mt-3">
+        <form method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" required>
+                <input type="email" id="email" name="email" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+                <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit">Login</button>
         </form>
 
-        <p class="mt-3">Don't have an account? <a href="/admin/register">Register</a></p>
+        <p>Don't have an account? <a href="/admin/register">Register</a></p>
     </div>
+
 </body>
 </html>

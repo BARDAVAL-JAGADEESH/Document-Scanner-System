@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <style>
-        /* Set the background image */
+        
         body {
-            background-image: url('https://tse4.mm.bing.net/th?id=OIP.oDmQn8ncWbN8DJifU9YbrQHaEM&pid=Api&P=0&h=180.jpg'); /* Replace with your image URL */
+            background-image: url('https://tse2.mm.bing.net/th?id=OIP.WtkIIOsV6oB52-TuSQ0vuQHaEo&pid=Api&P=0&h=180.jpg'); /* Replace with your image URL */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -21,12 +21,12 @@
         }
 
         .container {
-            background-color: rgba(255, 255, 255, 0.8); /* White background with transparency */
+            background-color: rgba(255, 255, 255, 0.8); 
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 600px; /* You can adjust the max-width for container size */
+            max-width: 600px; 
             text-align: center;
         }
 
@@ -67,7 +67,6 @@
     <div class="container">
         <h2 class="mt-5">Admin Dashboard</h2>
 
-        <!-- Display Flash Message -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="alert alert-{{ messages[0][0] }}">
