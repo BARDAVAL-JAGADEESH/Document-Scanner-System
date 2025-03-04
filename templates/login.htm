@@ -6,27 +6,136 @@
   <title>Login</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  <style>
+    /* Set background image for the body */
+    body {
+      background-image: url('https://tse3.mm.bing.net/th?id=OIP.mN8amtWIKkDIBcPHHP6TYgHaEK&pid=Api&P=0&h=180.jpg'); /* Replace with your background image URL */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh; /* Ensure full screen height */
+    }
+
+    /* Flash message styling */
+    #flash-messages {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      max-width: 90%;
+    }
+
+    .flash-message {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .flash-message.success {
+      background-color: #4CAF50;
+    }
+
+    .flash-message.error {
+      background-color: #f44336;
+    }
+
+    /* Form container styling */
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+      padding: 40px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      margin: 100px auto;
+      color: white;
+      text-align: center;
+    }
+
+    /* Slide-in animation */
+    .slide-in {
+      animation: slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Form group styling */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    /* Button styling */
+    .btn {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #a045a0;
+    }
+
+    /* Register link styling */
+    p a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    p a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div id="flash-messages">
-      {% for category, message in messages %}
-        <div class="flash-message {{ category }}">{{ message }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div id="flash-messages">
+        {% for category, message in messages %}
+          <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
 
   <div class="form-container slide-in">
     <h2>Login</h2>
     <form method="POST" onsubmit="return validateLogin()">
       <div class="form-group">
-        <label for="email">Email (User ID):</label>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" required>
       </div>
       <div class="form-group">
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password" required>
       </div>
       <button type="submit" class="btn">Login</button>
@@ -35,4 +144,3 @@
   </div>
 </body>
 </html>
-

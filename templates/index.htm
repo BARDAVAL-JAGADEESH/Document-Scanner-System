@@ -21,9 +21,9 @@
 
     /* Header styling with black background */
     header {
-      background-color: black; /* Black background */
+      background-color: rgb(42, 41, 41); /* Black background */
       text-align: center;
-      padding: 30px;
+      padding: 20px;
       color: white; /* White text for contrast */
     }
 
@@ -35,18 +35,25 @@
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
+
     .slide-mid {
       background-color: rgba(0, 0, 0, 0.7); /* Dark background */
-      padding: 20px 40px; /* Add padding inside the box */
+      padding: 10px 20px; /* Adjust padding to make the box smaller */
       border-radius: 50px; /* Rounded corners */
       align-items: center;
       box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+      display: inline-block; /* Center the box */
+      margin: 0 auto; /* Center the box horizontally */
+      width: fit-content; /* Make the box size fit content */
+      text-align: center; /* Center the text */
     }
+
     h3 {
-            font-size: 2em;
-            color: #a32525;
-            align-items: center;
-        }
+      font-size: 1.5em; /* Make the text smaller */
+      color: #a32525;
+      margin: 0;
+    }
+
     /* Navigation styling */
     nav {
       display: flex;
@@ -111,7 +118,7 @@
       <p>Scan and match your documents quickly with our advanced document scanner.</p>
 
       <nav class="slide-mid">
-        <h3 href="/scan" >Upload Document </h3>
+        <h3><a href="/scan">Upload Document</a></h3>
       </nav>
     </section>
   </main>
