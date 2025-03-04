@@ -37,11 +37,11 @@
     }
 
     .slide-mid {
-      background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+      background-color: rgba(25, 25, 26, 0.7); /* Dark background */
       padding: 10px 20px; /* Adjust padding to make the box smaller */
       border-radius: 50px; /* Rounded corners */
       align-items: center;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+      box-shadow: 0 4px 4px rgba(137, 34, 34, 0.1); /* Shadow for depth */
       display: inline-block; /* Center the box */
       margin: 0 auto; /* Center the box horizontally */
       width: fit-content; /* Make the box size fit content */
@@ -105,7 +105,7 @@
       <a href="/admin/dashboard">Admin</a>
       <a href="/scan">Upload Document</a>
       <a href="/admin/dashboard">Credit Request</a>
-      <a href="/user/profile">Profile</a>
+      <a href="/user/profile">Analytics</a>
       {% if session.get('role') %}
         <!-- Display logout link if user is logged in -->
         <a href="/auth/logout">Logout</a>
@@ -115,11 +115,12 @@
 
   <main>
     <section class="intro">
-      <p>Scan and match your documents quickly with our advanced document scanner.</p>
+      
 
       <nav class="slide-mid">
         <h3><a href="/scan">Upload Document</a></h3>
       </nav>
+      <p>Scan and match your documents quickly with our advanced document scanner.</p>
     </section>
   </main>
 
