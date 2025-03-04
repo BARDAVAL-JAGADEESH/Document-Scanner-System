@@ -5,17 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Set background image */
+        body {
+            background-image: url('https://example.com/path-to-your-image.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            text-align: center; /* Center text */
+        }
+
+        /* Profile container styling */
+        .profile-container {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+            padding: 40px;
+            border-radius: 10px;
+            color: white;
+            width: 80%;
+            max-width: 600px; /* Limit the width */
+        }
+
+        /* Link styling */
+        a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        /* Box styling for the "Upload Document" text */
+        .upload-box {
+            background-color: rgba(18, 17, 17, 0.8); /* Light background for the box */
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: inline-block; /* Keep the box size as small as needed */
+        }
+
+        .upload-box a {
+            color: #48d2e8;
+            font-size: 1.2em;
+            text-decoration: none;
+        }
+
+        .upload-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* Box styling for the Logout link */
+        .logout-box {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black box */
+            padding: 15px 30px; /* Add padding for the box */
+            margin-top: 20px; /* Space between other elements */
+            border-radius: 10px; /* Rounded corners */
+            display: inline-block; /* Keep the box size as needed */
+        }
+
+        /* Pink color for the logout link */
+        .logout-box a {
+            color: #FF69B4; /* Pink color */
+            font-size: 1.2em;
+            text-decoration: none;
+        }
+
+        .logout-box a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome, {{ user['username'] }}</h1>
-    <p>Credits: {{ user['credits'] }}</p>
-    <a href="/scan">Upload Document</a>
-    <h2>Your Documents</h2>
-    <ul>
-        {% for doc in documents %}
-        <li><a href="/matches/{{ doc['id'] }}">{{ doc['filename'] }}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="/auth/logout">Logout</a>
+    <div class="profile-container">
+        <h1> Smart Analytics Dashboard {{ user['username'] }}</h1>
+        <p>Credits: {{ user['credits'] }}</p>
+
+        <!-- Upload Document in its own box -->
+        <div class="upload-box">
+            <a href="/scan">Upload Document</a>
+        </div>
+
+        <h2>User can Uploaded all Documents  ....</h2>
+        <ul>
+            {% for doc in documents %}
+            <li><a href="/matches/{{ doc['id'] }}">{{ doc['filename'] }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <!-- Logout Box with Pink Color -->
+        <div class="logout-box">
+            <a href="/auth/logout">Logout</a>
+        </div>
+    </div>
 </body>
 </html>
