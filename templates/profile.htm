@@ -8,7 +8,7 @@
     <style>
         /* Set background image */
         body {
-            background-image: url('https://example.com/path-to-your-image.jpg'); /* Replace with your image URL */
+            /*background-image: url('https://tse2.mm.bing.net/th?id=OIP.igaAHliKx1SSV7EcQdjqcAHaEK&pid=Api&P=0&h=180.jpg'); /* Replace with your image URL */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -24,12 +24,14 @@
 
         /* Profile container styling */
         .profile-container {
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for readability */
+            background-color: rgba(10, 9, 9, 0.7); /* Semi-transparent background for readability */
             padding: 40px;
             border-radius: 10px;
             color: white;
             width: 80%;
             max-width: 600px; /* Limit the width */
+            max-height: 80vh; /* Set max height to 80% of the viewport height */
+            overflow-y: auto; /* Allow scrolling if the content exceeds the max height */
         }
 
         /* Link styling */
@@ -50,6 +52,9 @@
         ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
+            max-height: 400px; /* Set a max height for the document list */
+            overflow-y: auto; /* Enable scrolling if the list exceeds the max height */
         }
 
         li {
@@ -106,7 +111,7 @@
             <a href="/scan">Upload Document</a>
         </div>
 
-        <h2>User can Uploaded all Documents  ....</h2>
+        <h2>User can Uploaded all Documents ....</h2>
         <ul>
             {% for doc in documents %}
             <li><a href="/matches/{{ doc['id'] }}">{{ doc['filename'] }}</a></li>

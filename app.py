@@ -139,7 +139,27 @@ def profile():
     documents = cursor.fetchall()
     conn.close()
     return render_template('profile.htm', user=user, documents=documents)
-
+# Request Additional Credits
+@app.route('/user/request_credits', methods=['GET', 'POST'])
+def request_credits():
+    if 'user_id' not in session:
+        flash('Please log in to request credits.', 'error')
+        return redirect('/auth/login')
+    
+    if request.method == 'POST':
+        requested_credits = int(request.form['requested_credits'])
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            'INSERT INTO credit_requests (user_id, requested_credits) VALUES (?, ?)', 
+            (session['user_id'], requested_credits)
+        )
+        conn.commit()
+        conn.close()
+        flash('Credit request submitted for approval.', 'success')
+        return redirect('/user/profile')
+    
+    return render_template('request_credits.htm')
 # Document Upload
 @app.route('/scan', methods=['GET', 'POST'])
 def upload_document():
@@ -214,27 +234,30 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect('/')
 
-# User Credit Request
-@app.route('/user/credit_request', methods=['GET', 'POST'])
-def credit_request():
-    if 'user_id' not in session:
-        flash('Please log in to request additional credits.', 'error')
-        return redirect('/auth/login')
 
-    if request.method == 'POST':
-        requested_credits = int(request.form['requested_credits'])
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO credit_requests (user_id, requested_credits) VALUES (?, ?)',
-                       (session['user_id'], requested_credits))
-        conn.commit()
-        conn.close()
-        flash(f'Your request for {requested_credits} additional credits has been submitted.', 'success')
-        return redirect('/user/profile')
+# Admin Dashboard
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    if 'role' not in session or session['role'] != 'admin':
+        flash('You must be an admin to access this page.', 'error')
+        return redirect('/admin/login')
 
-    return render_template('credit_request.htm')
+    # Connect to the database and fetch total users and documents
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
-# Admin View Pending Credit Requests
+    cursor.execute('SELECT COUNT(*) FROM users')
+    total_users = cursor.fetchone()[0]  # Get the total number of users
+
+    cursor.execute('SELECT COUNT(*) FROM documents')
+    total_documents = cursor.fetchone()[0]  # Get the total number of documents
+
+    conn.close()
+
+    # Pass the total_users and total_documents to the template
+    return render_template('admin_dashboard.htm', total_users=total_users, total_documents=total_documents)
+
+# Admin Credit Requests
 @app.route('/admin/credits/requests')
 def admin_credit_requests():
     if 'role' not in session or session['role'] != 'admin':
@@ -243,7 +266,7 @@ def admin_credit_requests():
 
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('''
+    cursor.execute(''' 
         SELECT credit_requests.id, credit_requests.requested_credits, users.name as username
         FROM credit_requests
         JOIN users ON credit_requests.user_id = users.id
@@ -253,7 +276,6 @@ def admin_credit_requests():
     conn.close()
 
     return render_template('admin_credit_requests.htm', requests=requests)
-
 # Admin Approve Credit Request
 @app.route('/admin/credits/approve/<int:request_id>', methods=['POST'])
 def approve_credit_request(request_id):
@@ -282,6 +304,7 @@ def approve_credit_request(request_id):
     conn.close()
     return redirect('/admin/credits/requests')
 
+
 # Admin Deny Credit Request
 @app.route('/admin/credits/deny/<int:request_id>', methods=['POST'])
 def deny_credit_request(request_id):
@@ -299,6 +322,7 @@ def deny_credit_request(request_id):
     flash('Credit request has been denied.', 'success')
     conn.close()
     return redirect('/admin/credits/requests')
+
 
 # Admin Adjust User Credits
 @app.route('/admin/credits/adjust', methods=['GET', 'POST'])
@@ -332,6 +356,67 @@ def adjust_user_credits():
 
     return render_template('admin_adjust_credits.htm', users=users)
 
-if __name__ == "__main__":
+
+# Admin Register
+@app.route('/admin/register', methods=['GET', 'POST'])
+def admin_register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        contact = request.form['contact']
+        password = request.form['password']
+        password_hash = generate_password_hash(password)
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        try:
+            # Ensure the role is set to 'admin' during registration
+            cursor.execute(
+                'INSERT INTO users (name, email, contact, password_hash, role) VALUES (?, ?, ?, ?, ?)', 
+                (name, email, contact, password_hash, 'admin')
+            )
+            conn.commit()
+            flash('Admin registered successfully!', 'success')
+            return redirect('/admin/login')
+        except sqlite3.IntegrityError:
+            flash('Email already registered. Please use a different email.', 'error')
+        finally:
+            conn.close()
+
+    return render_template('admin_register.htm')
+# Admin Login
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if 'role' in session and session['role'] == 'admin':
+        return redirect('/admin/dashboard')  # If already logged in, redirect to the dashboard.
+
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        # Look for the admin user in the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user and user['role'] == 'admin' and check_password_hash(user['password_hash'], password):
+            session['user_id'] = user['id']
+            session['username'] = user['name']
+            session['role'] = 'admin'
+            flash('Admin login successful!', 'success')
+            return redirect('/admin/dashboard')
+        else:
+            flash('Invalid email or password, or you are not an admin.', 'error')
+
+    return render_template('admin_login.htm')
+
+
+
+if __name__ == '__main__':
+    # Initialize database and reset daily credits
     initialize_database()
+    reset_daily_credits()  # This can be scheduled to run once a day in production
     app.run(debug=True)
