@@ -275,7 +275,7 @@ def admin_credit_requests():
     requests = cursor.fetchall()
     conn.close()
 
-    return render_template('admin_credit_requests.htm', requests=requests)
+    return render_template('admin_adjust_credits.htm', requests=requests)
 
 # Admin Approve Credit Request
 @app.route('/admin/credits/approve/<int:request_id>', methods=['POST'])

@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <style>
         body {
-            background-image: url('https://tse2.mm.bing.net/th?id=OIP.WtkIIOsV6oB52-TuSQ0vuQHaEo&pid=Api&P=0&h=180.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-color: #f4f4f9; /* Background color for contrast */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh;
+            height: 100vh; /* Full viewport height */
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-        }
-
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
+            justify-content: flex-start;
+            color: #333;
+            padding-top: 20px; /* Added padding to the top */
+            padding-bottom: 40px; /* Added padding to the bottom to avoid overlap */
+            box-sizing: border-box; /* Ensures padding doesn't mess with layout */
+            flex-grow: 1; /* Allows the body to grow and avoid overlap */
         }
 
         h2 {
-            font-size: 2em;
-            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
 
         h4 {
-            font-size: 1.2em;
+            font-size: 1.5em;
             color: #555;
+            margin-bottom: 15px;
         }
 
         .alert {
             padding: 15px;
             margin-bottom: 20px;
-            font-size: 1em;
+            font-size: 1.1em;
             border-radius: 5px;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-danger,
+        .btn-success,
+        .btn-warning {
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.1em;
+            cursor: pointer;
         }
 
         .btn-danger {
             background-color: #e74c3c;
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
         }
 
         .btn-danger:hover {
@@ -63,11 +67,6 @@
         .btn-success {
             background-color: #2ecc71;
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
         }
 
         .btn-success:hover {
@@ -77,101 +76,198 @@
         .btn-warning {
             background-color: #f39c12;
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
         }
 
         .btn-warning:hover {
             background-color: #e67e22;
         }
 
-        .request-list {
-            margin-top: 20px;
-            text-align: left;
+        .request-list,
+        .form-container {
+            width: 80%;
+            max-width: 900px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .request-item {
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
-            margin-bottom: 10px;
-            border-radius: 5px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
         .request-item h5 {
             margin: 0;
-            color: #333;
+            font-size: 1.2em;
         }
 
         .request-item p {
-            margin: 5px 0;
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .request-item form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        table td {
+            background-color: #fafafa;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input[type="number"] {
+            padding: 10px;
+            width: 100%;
+            font-size: 1em;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        select:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+        }
+
+        .back-link:hover {
+            color: #0056b3;
+        }
+
+        /* Add space at the bottom for the logout button */
+        .mt-4 {
+            margin-top: 30px;
+        }
+
+        /* Ensure Logout button is not stuck to the bottom */
+        .mt-3 {
+            margin-top: 30px;
+        }
+
+        /* Make sure the logout button stays at the bottom of the page */
+        .logout-button {
+            margin-top: auto; /* Pushes logout button to the bottom */
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h2 class="mt-5">Admin Dashboard</h2>
+    <h2>Admin Dashboard</h2>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="alert alert-{{ messages[0][0] }}">
-                    {{ messages[0][1] }}
-                </div>
-            {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="alert alert-{{ messages[0][0] }}">
+        {{ messages[0][1] }}
+    </div>
+    {% endif %}
+    {% endwith %}
 
-        <div class="mt-4">
-            <h4>Total Users: {{ total_users }}</h4>
-            <h4>Total Documents: {{ total_documents }}</h4>
+    <div class="request-list">
+        <h3>Total Users: {{ total_users }}</h4>
+        <h3>Total Documents Uploaded: {{ total_documents }}</h4>
+    </div>
+
+    <div class="request-list">
+        <h3>Pending Credit Requests</h3>
+        {% if credit_requests %}
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Requested Credits</th>
+                <th>Actions</th>
+            </tr>
+            {% for request in credit_requests %}
+            <tr>
+                <td>{{ request.username }}</td>
+                <td>{{ request.requested_credits }}</td>
+                <td>
+                    <form method="POST" action="/admin/credits/approve/{{ request.id }}" style="display:inline;">
+                        <button type="submit" class="btn-success">Approve</button>
+                    </form>
+                    <form method="POST" action="/admin/credits/deny/{{ request.id }}" style="display:inline;">
+                        <button type="submit" class="btn-warning">Deny</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div class="d-flex">
+            <a href="/admin/credits/requests" class="btn btn-warning mt-3">Check Pending Credit Requests</a>
+
         </div>
+        {% endif %}
+    </div>
 
-        <div class="mt-4">
-            <h3>Pending Credit Requests</h3>
-            {% if credit_requests %}
-                <div class="request-list">
-                    {% for request in credit_requests %}
-                    <div class="request-item">
-                        <h5>Request by: {{ request.username }}</h5>
-                        <p>Requested Credits: {{ request.requested_credits }}</p>
-                        <form method="POST" action="/admin/credits/approve/{{ request.id }}" style="display:inline;">
-                            <button type="submit" class="btn-success">Approve</button>
-                        </form>
-                        <form method="POST" action="/admin/credits/deny/{{ request.id }}" style="display:inline;">
-                            <button type="submit" class="btn-warning">Deny</button>
-                        </form>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>No pending credit requests at the moment.</p>
-            {% endif %}
-        </div>
-
-        <div class="mt-4">
-            <h3>Adjust User Credits</h3>
-            <form action="/admin/credits/adjust" method="POST">
+    <div class="form-container">
+        <h3>Adjust User Credits</h3>
+        <form action="/admin/credits/adjust" method="POST">
+            <div class="form-group">
                 <label for="user_id">Select User:</label>
                 <select name="user_id" id="user_id" required>
                     {% for user in users %}
                     <option value="{{ user.id }}">{{ user.name }}</option>
                     {% endfor %}
                 </select>
+            </div>
+            <div class="form-group">
                 <label for="credit_adjustment">Credits Adjustment:</label>
                 <input type="number" name="credit_adjustment" id="credit_adjustment" required>
-                <button type="submit" class="btn-success">Adjust Credits</button>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="btn-success">Adjust Credits</button>
+        </form>
+    </div>
 
-        <div class="mt-4">
-            <h3>User Credit Balance and Daily Scans</h3>
-            <p>Each user gets 20 free scans daily (reset at midnight). If the user exceeds this limit, they will need to request additional credits.</p>
-        </div>
+    <div class="logout-button mt-3">
+        <a href="/admin/logout" class="btn btn-danger">Logout</a>
+    </div>
 
-        <a href="/admin/logout" class="btn btn-danger mt-3">Logout</a>
+    <div class="mt-4">
+        <p>Bardaval Jagadeesh</p>
     </div>
 
 </body>
+
 </html>
