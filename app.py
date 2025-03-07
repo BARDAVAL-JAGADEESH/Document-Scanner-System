@@ -7,9 +7,9 @@ import sqlite3
 from Levenshtein import distance as levenshtein_distance
 
 app = Flask(__name__)
-app.secret_key = '763a6281586470046cd8dc9c3941c17c3589517284b56c88'  # Replace with a strong secret key
+app.secret_key = '763a6281586470046cd8dc9c3941c17c3589517284b56c88'  # Replacing  with a strong secret key
 
-# Allowed file extensions and upload folder
+#This will  Allowed file extensions and it can upload into a  folder
 ALLOWED_EXTENSIONS = {'txt', 'csv', 'pdf'}
 UPLOAD_FOLDER = 'uploads'
 if not os.path.exists(UPLOAD_FOLDER):
@@ -57,8 +57,7 @@ def initialize_database():
     ''')
     conn.commit()
     conn.close()
-
-# Improved daily credits reset (should be scheduled to run at midnight in production)
+# This function willtrack daily credits reset 
 def reset_daily_credits():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -70,7 +69,7 @@ def reset_daily_credits():
     conn.commit()
     conn.close()
 
-# Check if file extension is allowed
+# it will Check if file extension is allowed or not
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -139,8 +138,9 @@ def profile():
     documents = cursor.fetchall()
     conn.close()
     return render_template('profile.htm', user=user, documents=documents)
+
 # Request Additional Credits
-@app.route('/user/request_credits', methods=['GET', 'POST'])
+@app.route('/user/request_credit', methods=['GET', 'POST'])
 def request_credits():
     if 'user_id' not in session:
         flash('Please log in to request credits.', 'error')
@@ -159,7 +159,8 @@ def request_credits():
         flash('Credit request submitted for approval.', 'success')
         return redirect('/user/profile')
     
-    return render_template('request_credits.htm')
+    return render_template('credit_request.htm')
+
 # Document Upload
 @app.route('/scan', methods=['GET', 'POST'])
 def upload_document():
@@ -234,7 +235,6 @@ def logout():
     flash('You have been logged out.', 'success')
     return redirect('/')
 
-
 # Admin Dashboard
 @app.route('/admin/dashboard')
 def admin_dashboard():
@@ -276,6 +276,7 @@ def admin_credit_requests():
     conn.close()
 
     return render_template('admin_credit_requests.htm', requests=requests)
+
 # Admin Approve Credit Request
 @app.route('/admin/credits/approve/<int:request_id>', methods=['POST'])
 def approve_credit_request(request_id):
@@ -304,7 +305,6 @@ def approve_credit_request(request_id):
     conn.close()
     return redirect('/admin/credits/requests')
 
-
 # Admin Deny Credit Request
 @app.route('/admin/credits/deny/<int:request_id>', methods=['POST'])
 def deny_credit_request(request_id):
@@ -322,7 +322,6 @@ def deny_credit_request(request_id):
     flash('Credit request has been denied.', 'success')
     conn.close()
     return redirect('/admin/credits/requests')
-
 
 # Admin Adjust User Credits
 @app.route('/admin/credits/adjust', methods=['GET', 'POST'])
@@ -355,7 +354,6 @@ def adjust_user_credits():
     conn.close()
 
     return render_template('admin_adjust_credits.htm', users=users)
-
 
 # Admin Register
 @app.route('/admin/register', methods=['GET', 'POST'])
@@ -412,6 +410,13 @@ def admin_login():
             flash('Invalid email or password, or you are not an admin.', 'error')
 
     return render_template('admin_login.htm')
+# Admin Logout Route
+@app.route('/admin/logout')
+def admin_logout():
+    session.clear()  # Clear all session data
+    flash('You have been logged out successfully.', 'success')
+    return redirect('/admin/dashboard')  # Redirect to admin dashboard after logout
+
 
 
 

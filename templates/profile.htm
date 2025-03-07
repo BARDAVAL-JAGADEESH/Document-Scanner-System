@@ -29,7 +29,7 @@
             border-radius: 10px;
             color: white;
             width: 80%;
-            max-width: 600px; /* Limit the width */
+            max-width: 1500px; /* Limit the width */
             max-height: 80vh; /* Set max height to 80% of the viewport height */
             overflow-y: auto; /* Allow scrolling if the content exceeds the max height */
         }
@@ -61,13 +61,15 @@
             margin: 10px 0;
         }
 
-        /* Box styling for the "Upload Document" text */
+        /* Box styling for the "Upload Document" and "Credit Request" links */
         .upload-box {
             background-color: rgba(18, 17, 17, 0.8); /* Light background for the box */
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            display: inline-block; /* Keep the box size as small as needed */
+            display: flex; /* Use Flexbox to arrange the items side by side */
+            justify-content: space-between; /* Distribute the links with space between */
+            align-items: center; /* Vertically center the items */
         }
 
         .upload-box a {
@@ -84,7 +86,7 @@
         .logout-box {
             background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black box */
             padding: 15px 30px; /* Add padding for the box */
-            margin-top: 20px; /* Space between other elements */
+            margin-top: 40px; /* Increase space between other elements */
             border-radius: 10px; /* Rounded corners */
             display: inline-block; /* Keep the box size as needed */
         }
@@ -106,19 +108,20 @@
         <h1> Smart Analytics Dashboard {{ user['username'] }}</h1>
         <p>Credits: {{ user['credits'] }}</p>
 
-        <!-- Upload Document in its own box -->
+        <!-- Upload Document and Credit Request side by side -->
         <div class="upload-box">
             <a href="/scan">Upload Document</a>
+            <a href="/user/request_credit">Credit Request</a>
         </div>
 
-        <h2>User can Uploaded all Documents ....</h2>
+        <h2>You can See Below Uploaded all Documents ....</h2>
         <ul>
             {% for doc in documents %}
             <li><a href="/matches/{{ doc['id'] }}">{{ doc['filename'] }}</a></li>
             {% endfor %}
         </ul>
 
-        <!-- Logout Box with Pink Color -->
+        <!-- Logout link -->
         <div class="logout-box">
             <a href="/auth/logout">Logout</a>
         </div>

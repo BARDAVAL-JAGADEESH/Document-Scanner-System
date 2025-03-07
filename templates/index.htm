@@ -110,9 +110,11 @@
       <a href="/auth/register">Register</a>
       <a href="/admin/dashboard">Admin</a>
       <a href="/scan">Upload Document</a>
-      <a href="/user/request_credits">Credit Request</a>
+      <a href="/user/request_credit">Credit Request</a>
       <a href="/user/profile">Analytics</a>
       <a href="/admin/admin_credit_requests">Admin approve</a>
+
+      <a href="/scan">Upload Document</a>
       {% if session.get('role') %}
         <a href="/auth/logout">Logout</a>
       {% endif %}
@@ -123,6 +125,7 @@
     <section class="intro">
       <nav class="slide-mid">
         <h3><a href="/scan">Upload Document</a></h3>
+        
       </nav>
       <p>Scan and match your documents quickly with our advanced document scanner.</p>
     </section>
