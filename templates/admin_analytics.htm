@@ -30,6 +30,20 @@
             text-align: center;
         }
 
+        .form-container {
+            width: 80%;
+            max-width: 900px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            padding: auto;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .alert {
             padding: 10px;
             margin-bottom: 20px;
@@ -76,6 +90,61 @@
 
         table tr:hover td {
             background-color: #e0e0e0;
+        }
+
+        .back-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 30px;
+            display: block;
+            width: 200px;
+            margin: 30px auto 0;
+            text-align: center;
+            outline: none;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .back-btn:focus {
+            outline: none;
+        }
+
+        /* Logout and Smart Analytics Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
 
         @media (max-width: 768px) {
@@ -161,24 +230,13 @@
         </tbody>
     </table>
 
-    <!-- Top Users by Credits -->
-    <h3>Top Users by Credits</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Total Credits</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in top_users_by_credits %}
-            <tr>
-                <td>{{ user.user_id }}</td>
-                <td>{{ user.total_credits }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+   
+    
+    <!-- Buttons for Logout and Smart Analytics -->
+    <div class="form-container">
+        <a href="/admin/logout" class="btn btn-danger">Logout</a>
+        <a href="/admin/dashboard" class="btn btn-primary">Back to Dashboard</a>
+    </div>
 </div>
 
 </body>

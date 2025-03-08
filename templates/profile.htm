@@ -4,124 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        /* Set background image */
-        body {
-            /*background-image: url('https://tse2.mm.bing.net/th?id=OIP.igaAHliKx1SSV7EcQdjqcAHaEK&pid=Api&P=0&h=180.jpg'); /* Replace with your image URL */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh; /* Full viewport height */
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            text-align: center; /* Center text */
+        /* Style for the main container */
+        .container {
+            padding: 20px;
+            text-align: center; /* Centering the content */
         }
 
-        /* Profile container styling */
-        .profile-container {
-            background-color: rgba(57, 54, 54, 0.7); /* Semi-transparent background for readability */
-            padding: 40px;
-            border-radius: 10px;
-            color: white;
-            width: 80%;
-            max-width: 1500px; /* Limit the width */
-            max-height: 80vh; /* Set max height to 80% of the viewport height */
-            overflow-y: auto; /* Allow scrolling if the content exceeds the max height */
-        }
-
-        /* Link styling */
-        a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        h1, h2 {
+        /* Style for the title (Smart Analytics Dashboard) */
+        h1 {
+            font-size: 28px;
             margin-bottom: 20px;
         }
 
+        /* Style for the Credits box */
+        .credits-box {
+            display: inline-block;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #adafb1;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .credits-box p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        /* Style for the "Upload Document" and "Credit Request" boxes */
+        .box {
+            display: inline-block;
+            width: 45%;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            background-color: #adafb1;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .box a {
+            display: block;
+            font-size: 18px;
+            text-decoration: none;
+            color: #007BFF;
+            margin-top: 10px;
+        }
+
+        /* Style for the uploaded documents list */
         ul {
             list-style-type: none;
-            padding: 0;
-            margin: 0;
-            max-height: 400px; /* Set a max height for the document list */
-            overflow-y: auto; /* Enable scrolling if the list exceeds the max height */
+            padding-left: 0;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         li {
-            margin: 10px 0;
+            margin-bottom: 5px;
         }
-
-        /* Box styling for the "Upload Document" and "Credit Request" links */
-        .upload-box {
-            background-color: rgba(18, 17, 17, 0.8); /* Light background for the box */
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex; /* Use Flexbox to arrange the items side by side */
-            justify-content: space-between; /* Distribute the links with space between */
-            align-items: center; /* Vertically center the items */
-        }
-
-        .upload-box a {
-            color: #48d2e8;
-            font-size: 1.2em;
-            text-decoration: none;
-        }
-
-        .upload-box a:hover {
-            text-decoration: underline;
-        }
-
-        /* Box styling for the Logout link */
         .logout-box {
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black box */
-            padding: 15px 30px; /* Add padding for the box */
-            margin-top: 40px; /* Increase space between other elements */
-            border-radius: 10px; /* Rounded corners */
-            display: inline-block; /* Keep the box size as needed */
+            display: inline-block;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #adafb1;
+            text-align: center;
         }
 
-        /* Pink color for the logout link */
         .logout-box a {
-            color: #FF69B4; /* Pink color */
-            font-size: 1.2em;
+            font-size: 18px;
             text-decoration: none;
+            color: #070707;
         }
 
-        .logout-box a:hover {
-            text-decoration: underline;
+        /* Style for the logout box */
+        .box1-box {
+            display: inline-block;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #e7e0e0;
+            background-color: black;
+            border-radius: 8px;
+            text-align: center;
         }
+
+        .box1-box a {
+            font-size: 18px;
+            text-decoration: none;
+            color: #cb165e;
+        }
+
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <h1> Smart Analytics Dashboard {{ user['username'] }}</h1>
-        <p>Credits: {{ user['credits'] }}</p>
+    <div class="container">
+        <!-- Title: Smart Analytics Dashboard -->
+        <h1>Smart Analytics Dashboard - {{ user['username'] }}</h1>
 
-        <!-- Upload Document and Credit Request side by side -->
-        <div class="upload-box">
-            <a href="/scan">Upload Document</a>
-            <a href="/user/request_credit">Credit Request</a>
+        <!-- Credits Box -->
+        <div class="credits-box">
+            <p>Credits: {{ user['credits'] }}</p>
         </div>
 
-        <h2>You can Uploaded all Documents ....</h2>
+        <!-- Container for Upload Document and Credit Request -->
+        <div class="box-container">
+            <div class="box">
+                <h3>Upload Document</h3>
+                <div class="box1-box">
+                <a href="/scan">Upload Document</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <h3>Credit Request</h3>
+                <div class="box1-box">
+                <a href="/user/request_credit">Credit Request</a>
+            </div>
+            </div>
+        </div>
+
+        <h2>You can see all the Uploaded Documents below.....</h2>
         <ul>
             {% for doc in documents %}
-            <li><a href="/matches/{{ doc['id'] }}">{{ doc['filename'] }}</a></li>
+                <li><a href="/matches/{{ doc['id'] }}">{{ doc['filename'] }}</a></li>
             {% endfor %}
         </ul>
 
-        <!-- Logout link -->
+        <!-- Logout link inside a box -->
         <div class="logout-box">
             <a href="/auth/logout">Logout</a>
         </div>
