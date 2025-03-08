@@ -155,65 +155,6 @@ def profile():
     conn.close()
     return render_template('profile.htm', user=user, documents=documents)
 
-# Admin Analytics Dashboard
-@app.route('/admin/analytics')
-def analytics_dashboard():
-    if 'role' not in session or session['role'] != 'admin':
-        flash('You must be an admin to access this page.', 'error')
-        return redirect('/admin/login')
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    # 1. Scans per user per day (count of documents uploaded per user per day)
-    cursor.execute('''
-        SELECT user_id, strftime('%Y-%m-%d', upload_date) AS scan_date, COUNT(*) AS scans
-        FROM documents
-        GROUP BY user_id, scan_date
-        ORDER BY scan_date DESC
-    ''')
-    scans_per_user = cursor.fetchall()
-
-    # 2. Removed the topic query
-    # Simply grouping by filename instead (or any other attribute you might need)
-    cursor.execute('''
-        SELECT filename, COUNT(*) AS file_count
-        FROM documents
-        GROUP BY filename
-        ORDER BY file_count DESC
-        LIMIT 10
-    ''')
-    common_topics = cursor.fetchall()
-
-    # 3. Top users by scan count
-    cursor.execute('''
-        SELECT user_id, COUNT(*) AS scan_count
-        FROM documents
-        GROUP BY user_id
-        ORDER BY scan_count DESC
-        LIMIT 5
-    ''')
-    top_users_by_scans = cursor.fetchall()
-
-    # 4. Credit usage statistics
-    cursor.execute('''
-        SELECT user_id, SUM(credits_used) AS total_credits
-        FROM credit_usage
-        GROUP BY user_id
-        ORDER BY total_credits DESC
-        LIMIT 5
-    ''')
-    top_users_by_credits = cursor.fetchall()
-
-    conn.close()
-
-    return render_template('admin_analytics.htm', 
-                           scans_per_user=scans_per_user, 
-                           common_topics=common_topics, 
-                           top_users_by_scans=top_users_by_scans, 
-                           top_users_by_credits=top_users_by_credits)
-
-
 # Request Additional Credits
 @app.route('/user/request_credit', methods=['GET', 'POST'])
 def request_credits():
@@ -503,6 +444,65 @@ def admin_logout():
     flash('You have been logged out successfully.', 'success')
     return redirect('/admin/dashboard')  # Redirect to admin dashboard after logout
 
+
+
+# Admin Analytics Dashboard
+@app.route('/admin/analytics')
+def analytics_dashboard():
+    if 'role' not in session or session['role'] != 'admin':
+        flash('You must be an admin to access this page.', 'error')
+        return redirect('/admin/login')
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # 1. Scans per user per day (count of documents uploaded per user per day)
+    cursor.execute('''
+        SELECT user_id, strftime('%Y-%m-%d', upload_date) AS scan_date, COUNT(*) AS scans
+        FROM documents
+        GROUP BY user_id, scan_date
+        ORDER BY scan_date DESC
+    ''')
+    scans_per_user = cursor.fetchall()
+
+    # 2. Removed the topic query
+    # Simply grouping by filename instead (or any other attribute you might need)
+    cursor.execute('''
+        SELECT filename, COUNT(*) AS file_count
+        FROM documents
+        GROUP BY filename
+        ORDER BY file_count DESC
+        LIMIT 10
+    ''')
+    common_topics = cursor.fetchall()
+
+    # 3. Top users by scan count
+    cursor.execute('''
+        SELECT user_id, COUNT(*) AS scan_count
+        FROM documents
+        GROUP BY user_id
+        ORDER BY scan_count DESC
+        LIMIT 5
+    ''')
+    top_users_by_scans = cursor.fetchall()
+
+    # 4. Credit usage statistics
+    cursor.execute('''
+        SELECT user_id, SUM(credits_used) AS total_credits
+        FROM credit_usage
+        GROUP BY user_id
+        ORDER BY total_credits DESC
+        LIMIT 5
+    ''')
+    top_users_by_credits = cursor.fetchall()
+
+    conn.close()
+
+    return render_template('admin_analytics.htm', 
+                           scans_per_user=scans_per_user, 
+                           common_topics=common_topics, 
+                           top_users_by_scans=top_users_by_scans, 
+                           top_users_by_credits=top_users_by_credits)
 
 
 

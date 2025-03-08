@@ -9,7 +9,6 @@
   <style>
     /* Set background image */
     body {
-      background-image: url('https://tse1.mm.bing.net/th?id=OIP.PYxl-VxNoPdzmsi5vgR6wwHaE6&pid=Api&P=0&h=180.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -20,57 +19,52 @@
       color: white;
     }
 
-    header {
-      background-color: rgb(42, 41, 41);
-      text-align: center;
-      padding: 20px;
-      color: white;
-    }
-
-    header h1.fade-in {
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    .slide-mid {
-      background-color: rgba(25, 25, 26, 0.7);
-      padding: 10px 20px;
-      border-radius: 50px;
-      box-shadow: 0 4px 4px rgba(137, 34, 34, 0.1);
-      display: inline-block;
-      margin: 0 auto;
-      width: fit-content;
-      text-align: center;
-    }
-
-    h3 {
-      font-size: 1.5em;
-      color: #a32525;
-      margin: 0;
-    }
-
+    /* Removed header section but kept the navigation */
     nav {
       display: flex;
       justify-content: center;
-      margin-top: 10px;
-      padding: 0 20px;
+      margin-top: 20px;
+      flex-wrap: wrap; /* Allows wrapping of elements on smaller screens */
+      gap: 20px; /* Spacing between the boxes */
+      background-color: #eef1f1; /* Solid background color for navigation */
+      padding: 20px 0;
     }
 
+    /* Styling for each individual navigation box */
     nav a {
-      color: white;
+      width: 200px;
+      padding: 5px; /* Decreased padding for smaller height */
+      border-radius:  #2f4f4f; /* Solid color */
+      margin: 10px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 4px rgba(137, 34, 34, 0.1);
+      color: rgb(19, 18, 18);
       text-decoration: none;
       font-size: 1.2em;
-      margin: 0 10px;
-      transition: color 0.3s ease;
+      display: block;
+      transition: background-color 0.3s ease;
     }
 
+    /* Hover effect for the links */
     nav a:hover {
-      color: #f11a94;
+      background-color: #2ba7dc;
     }
+
+    h1 {
+      font-size: 3em;
+      text-align: center;
+      color: rgb(12, 12, 12); 
+      font-size: 2em;
+      animation: fadeInColor 2s ease-in-out; /* Apply fadeInColor animation */
+    }
+    h4 {
+  text-align: center;
+  color: rgb(12, 12, 12); 
+  text-shadow: 2px 2px 5px rgba(47, 79, 79, 0.7); /* More visible and softer shadow */
+  font-style: oblique;
+  animation: fadeInColor 2s ease-in-out; /* Apply fadeInColor animation */
+}
 
     main {
       text-align: center;
@@ -82,9 +76,9 @@
 
     footer {
       text-align: center;
-      padding: 20px;
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
+      padding-top: 10px;
+      background-color: #FFFFFF;
+      color: rgb(19, 19, 19);
       position: fixed;
       bottom: 0;
       width: 100%;
@@ -92,6 +86,8 @@
 
     @media (max-width: 768px) {
       nav a {
+        width: 150px;
+        padding: 10px; /* Adjusted padding for smaller boxes on mobile */
         font-size: 1em;
       }
 
@@ -102,31 +98,27 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1 class="fade-in">Document Scanner</h1>
-    <nav>
-      <a href="/">Home</a>
-     
-      <a href="/admin/dashboard">Admin</a>
-      <a href="/scan">Upload Document</a>
-      <a href="/user/request_credit">Credit Request</a>
-      <a href="/user/profile">Analytics</a>
-      
 
-      <a href="/scan">Upload Document</a>
-      {% if session.get('role') %}
-        <a href="/auth/logout">Logout</a>
-      {% endif %}
-    </nav>
-  </header>
+  <nav>
+    <a href="/">Home</a>
+    
+    <a href="/scan">Upload Document</a>
+    <a href="/user/request_credit">Credit Request</a>
+    <a href="/user/profile">Credit System</a>
+    <a href="/admin/analytics">Smart Analytics Dashboard</a>
+    <a href="/admin/dashboard">Admin dashboard</a>
+   
+  </nav>
 
   <main>
+    <h1 class="fade-in">Document Scanner</h1>
     <section class="intro">
-      <nav class="slide-mid">
-        <h3><a href="/scan">Upload Document</a></h3>
-        
-      </nav>
-      <p>Scan and match your documents quickly with our advanced document scanner.</p>
+      <h4 class="fade-in-text">Welcome to the Document Scanner and Credit System
+        Our Document Scanner lets you quickly scan and match your documents with ease. Every 
+        user gets 20 free scans every day, so you can use the system without any cost.
+    
+        Once you've used up your free scans for the day, you can request more credits
+         to keep scanning. The credit system gives you the option to buy more scans when you need them.</h4>
     </section>
   </main>
 
