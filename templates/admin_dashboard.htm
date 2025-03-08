@@ -191,10 +191,9 @@
         }
     </style>
 </head>
-
 <body>
 
-    <h2>Admin Dashboard</h2>
+    <h2>Admin Credit Management:</h2>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -205,12 +204,12 @@
     {% endwith %}
 
     <div class="request-list">
-        <h3>Total Users: {{ total_users }}</h4>
-        <h3>Total Documents Uploaded: {{ total_documents }}</h4>
+        <h3>Total Users: {{ total_users }}</h3>
+        <h3>Total Documents Uploaded: {{ total_documents }}</h3>
     </div>
 
     <div class="request-list">
-        <h3>Pending Credit Requests</h3>
+        <h3>Credit Requests</h3>
         {% if credit_requests %}
         <table>
             <tr>
@@ -234,40 +233,18 @@
             {% endfor %}
         </table>
         {% else %}
-        <div class="d-flex">
-            <a href="/admin/credits/requests" class="btn btn-warning mt-3">Check Pending Credit Requests</a>
-
-        </div>
+        <p>No pending credit requests.</p>
         {% endif %}
     </div>
 
     <div class="form-container">
-        <h3>Adjust User Credits</h3>
-        <form action="/admin/credits/adjust" method="POST">
-            <div class="form-group">
-                <label for="user_id">Select User:</label>
-                <select name="user_id" id="user_id" required>
-                    {% for user in users %}
-                    <option value="{{ user.id }}">{{ user.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="credit_adjustment">Credits Adjustment:</label>
-                <input type="number" name="credit_adjustment" id="credit_adjustment" required>
-            </div>
-            <button type="submit" class="btn-success">Adjust Credits</button>
-        </form>
+        <a href="/admin/logout" class="btn btn-danger">Logout</a>
+        <a href="/admin/analytics" class="btn btn-danger">Admin Analyst</a>
     </div>
 
     <div class="logout-button mt-3">
-        <a href="/admin/logout" class="btn btn-danger">Logout</a>
-    </div>
-
-    <div class="mt-4">
-        <p>Bardaval Jagadeesh</p>
+        <p> Bardaval Jagadeesh</p>
     </div>
 
 </body>
 
-</html>

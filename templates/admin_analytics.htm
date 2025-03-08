@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .alert-success {
+            background-color: #28a745;
+        }
+
+        .alert-error {
+            background-color: #dc3545;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        table td {
+            background-color: #f9f9f9;
+        }
+
+        table tr:nth-child(even) td {
+            background-color: #f1f1f1;
+        }
+
+        table tr:hover td {
+            background-color: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+            table th, table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Admin Analytics Dashboard</h2>
+    
+    <!-- Success and Error Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="alert alert-{{ messages[0][0] }}">
+        {{ messages[0][1] }}
+    </div>
+    {% endif %}
+    {% endwith %}
+    
+    <!-- Scans Per User -->
+    <h3>Scans Per User Per Day</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Scan Date</th>
+                <th>Scans</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for scan in scans_per_user %}
+            <tr>
+                <td>{{ scan.user_id }}</td>
+                <td>{{ scan.scan_date }}</td>
+                <td>{{ scan.scans }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Most Common Documents -->
+    <h3>Most Common Documents</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Filename</th>
+                <th>File Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for topic in common_topics %}
+            <tr>
+                <td>{{ topic.filename }}</td>
+                <td>{{ topic.file_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Top Users by Scan Count -->
+    <h3>Top Users by Scan Count</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Scan Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in top_users_by_scans %}
+            <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.scan_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Top Users by Credits -->
+    <h3>Top Users by Credits</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Total Credits</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in top_users_by_credits %}
+            <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.total_credits }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
