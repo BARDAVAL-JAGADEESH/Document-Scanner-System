@@ -158,13 +158,13 @@ Open your browser and go to http://127.0.0.1:5000.
 Register as a user or admin, and start using the system.
 
 Future Enhancements
-AI-Powered Matching: Integrate OpenAI, Gemini, or DeepSeek for more accurate document matching.
+AI-Powered Matching: Integrating  OpenAI, Gemini, or DeepSeek for more accurate document matching.
 
-File Type Support: Add support for more file types (e.g., DOCX, XLSX).
+File Type Support: Adding support for more file types (e.g., DOCX, XLSX).
 
-Cloud Storage: Use cloud storage (e.g., AWS S3) for document storage instead of local storage.
+Cloud Storage: Using cloud storage (e.g., AWS S3) for document storage instead of local storage.
 
-Advanced Analytics: Add more detailed analytics, such as user activity trends and document similarity heatmaps.
+Advanced Analytics: Adding more detailed analytics, such as user activity trends and document similarity heatmaps.
 
 
 
