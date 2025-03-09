@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="{{ url_for('static', filename='script.js') }}" defer></script>
   <style>
-    /* Set background image */
+   
     body {
       background-size: cover;
       background-position: center;
@@ -19,22 +19,21 @@
       color: white;
     }
 
-    /* Removed header section but kept the navigation */
     nav {
       display: flex;
       justify-content: center;
       margin-top: 20px;
-      flex-wrap: wrap; /* Allows wrapping of elements on smaller screens */
-      gap: 20px; /* Spacing between the boxes */
-      background-color: #eef1f1; /* Solid background color for navigation */
+      flex-wrap: wrap; 
+      gap: 20px; 
+      background-color: #eef1f1;
       padding: 20px 0;
     }
 
-    /* Styling for each individual navigation box */
+ 
     nav a {
       width: 200px;
-      padding: 5px; /* Decreased padding for smaller height */
-      border-radius:  #2f4f4f; /* Solid color */
+      padding: 5px; 
+      border-radius:  #2f4f4f; 
       margin: 10px;
       border-radius: 10px;
       text-align: center;
@@ -46,7 +45,6 @@
       transition: background-color 0.3s ease;
     }
 
-    /* Hover effect for the links */
     nav a:hover {
       background-color: #2ba7dc;
     }
@@ -56,14 +54,14 @@
       text-align: center;
       color: rgb(12, 12, 12); 
       font-size: 2em;
-      animation: fadeInColor 2s ease-in-out; /* Apply fadeInColor animation */
+      animation: fadeInColor 2s ease-in-out; 
     }
     h4 {
   text-align: center;
   color: rgb(12, 12, 12); 
-  text-shadow: 2px 2px 5px rgba(47, 79, 79, 0.7); /* More visible and softer shadow */
+  text-shadow: 2px 2px 5px rgba(47, 79, 79, 0.7); 
   font-style: oblique;
-  animation: fadeInColor 2s ease-in-out; /* Apply fadeInColor animation */
+  animation: fadeInColor 2s ease-in-out;
 }
 
     main {
@@ -87,7 +85,7 @@
     @media (max-width: 768px) {
       nav a {
         width: 150px;
-        padding: 10px; /* Adjusted padding for smaller boxes on mobile */
+        padding: 10px; 
         font-size: 1em;
       }
 

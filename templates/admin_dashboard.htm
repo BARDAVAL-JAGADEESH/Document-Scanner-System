@@ -7,20 +7,20 @@
     <title>Admin Dashboard</title>
     <style>
         body {
-            background-color: #f4f4f9; /* Background color for contrast */
+            background-color: #f4f4f9; 
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh; /* Full viewport height */
+            height: 100vh; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             color: #333;
-            padding-top: 20px; /* Added padding to the top */
-            padding-bottom: 40px; /* Added padding to the bottom to avoid overlap */
-            box-sizing: border-box; /* Ensures padding doesn't mess with layout */
-            flex-grow: 1; /* Allows the body to grow and avoid overlap */
+            padding-top: 20px; 
+            padding-bottom: 40px; 
+            box-sizing: border-box; 
+            flex-grow: 1; 
         }
 
         h2 {
@@ -43,7 +43,7 @@
             color: #721c24;
         }
 
-        .btn-danger,
+        .btn-back,
         .btn-success,
         .btn-warning {
             padding: 12px 24px;
@@ -55,12 +55,12 @@
             cursor: pointer;
         }
 
-        .btn-danger {
+        .btn-back {
             background-color: #e74c3c;
             color: white;
         }
 
-        .btn-danger:hover {
+        .btn-back:hover {
             background-color: #c0392b;
         }
 
@@ -174,20 +174,16 @@
         .back-link:hover {
             color: #0056b3;
         }
-
-        /* Add space at the bottom for the logout button */
         .mt-4 {
             margin-top: 30px;
         }
 
-        /* Ensure Logout button is not stuck to the bottom */
         .mt-3 {
             margin-top: 30px;
         }
 
-        /* Make sure the logout button stays at the bottom of the page */
         .logout-button {
-            margin-top: auto; /* Pushes logout button to the bottom */
+            margin-top: auto; 
         }
     </style>
 </head>
@@ -238,8 +234,8 @@
     </div>
 
     <div class="form-container">
-        <a href="/admin/logout" class="btn btn-danger">Logout</a>
-        <a href="/admin/analytics" class="btn btn-danger">Back to admin Analytics Dashboard:</a>
+        <a href="/admin/logout" class="btn btn-back">Logout</a>
+        <a href="/admin/analytics" class="btn btn-back">Back to admin Analytics Dashboard:</a>
     </div>
 
     <div class="logout-button mt-3">

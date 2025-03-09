@@ -4,14 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Matches</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
+
 <body>
-    <h1>Matching Documents</h1>
+    <h1>Matches for {{ current_doc['filename'] }}</h1>
     <ul>
-        {% for match in matches %}
-        <li>{{ match['filename'] }}</li>
-        {% endfor %}
+        {% if matches %}
+            {% for match in matches %}
+                <li>
+                    <strong>{{ match['filename'] }}</strong> (Uploaded on {{ match['upload_date'] }})
+                    <br>Similarity: {{ "%.2f"|format(match['similarity'] * 100) }}%
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No matches found.</li>
+        {% endif %}
     </ul>
     <a href="/user/profile">Back to Profile</a>
 </body>

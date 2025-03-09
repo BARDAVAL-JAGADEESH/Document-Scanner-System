@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="{{ url_for('static', filename='script.js') }}" defer></script>
   <style>
-    /* Set background image for the body */
+
     body {
       background-image: url('https://tse3.mm.bing.net/th?id=OIP.mN8amtWIKkDIBcPHHP6TYgHaEK&pid=Api&P=0&h=180.jpg'); /* Replace with your background image URL */
       background-size: cover;
@@ -16,10 +16,8 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      height: 100vh; /* Ensure full screen height */
+      height: 100vh; 
     }
-
-    /* Flash message styling */
     #flash-messages {
       position: fixed;
       top: 10px;
@@ -44,9 +42,8 @@
       background-color: #f44336;
     }
 
-    /* Form container styling */
     .form-container {
-      background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+      background-color: rgba(0, 0, 0, 0.6); 
       padding: 40px;
       border-radius: 10px;
       width: 100%;
@@ -56,7 +53,6 @@
       text-align: center;
     }
 
-    /* Slide-in animation */
     .slide-in {
       animation: slideIn 1s ease-out;
     }
@@ -72,7 +68,6 @@
       }
     }
 
-    /* Form group styling */
     .form-group {
       margin-bottom: 20px;
     }
@@ -90,7 +85,6 @@
       border-radius: 5px;
     }
 
-    /* Button styling */
     .btn {
       padding: 10px 20px;
       background-color: #4CAF50;
@@ -104,8 +98,6 @@
     .btn:hover {
       background-color: #a045a0;
     }
-
-    /* Register link styling */
     p a {
       color: #4CAF50;
       text-decoration: none;
