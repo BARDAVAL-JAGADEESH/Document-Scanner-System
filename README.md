@@ -33,12 +33,12 @@ Each user has **20 free scans every day**, but if they need more, they can ask t
 
 ## Technologies Used
 - **Frontend**: HTML, CSS, JavaScript (No frameworks)
-- **Backend**: Python (Flask) or Node.js (Express)
+- **Backend**: Python (Flask) 
 - **Database**: SQLite
 - **Authentication**: Basic username-password login with hashed passwords
 - **File Storage**: Local storage for uploaded documents
-- **Text Matching Logic**: Custom algorithms like Levenshtein distance or word frequency matching
-- **Optional AI Integration**: OpenAI, Gemini, or DeepSeek for advanced matching
+- **Text Matching Logic**: Custom algorithms like Levenshtein distance 
+-
 
 ---
 
@@ -89,7 +89,6 @@ The project is built with the following architecture:
 - Users can upload plain text documents.
 - Each document scan costs **1 credit**.
 - The system compares the uploaded document against the existing documents using a basic text matching algorithm (such as Levenshtein distance).
-- **Optional**: AI-powered matching using advanced technologies like OpenAI or Gemini can improve document comparison accuracy.
 
 ### 4. Admin Analytics
 - Admins have access to an analytics dashboard, where they can:
